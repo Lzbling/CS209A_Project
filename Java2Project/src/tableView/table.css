@@ -1,0 +1,32 @@
+@CHARSET "UTF-8";
+#a {
+    font-size: 20px;
+    font-style: italic;
+    text-align: left;
+}
+table {
+    background-color: #C6C686;
+    border: 2px solid black;
+    border-collapse: separate;
+    border-spacing: 3px;
+    margin: 0 auto;
+}
+th {
+    height: 20px;
+    border: 1px solid black;
+    padding: 5px;
+    text-align: center;
+    font-size: 18px;
+}
+td {
+    height: 15px;
+    border: 1px solid black;
+    padding: 5px;
+    background-color: #365666;
+    text-align: center;
+    font-size: 15px;
+    color: white;
+}
+#div{
+    text-align: center;
+}
