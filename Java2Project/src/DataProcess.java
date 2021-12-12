@@ -1,13 +1,12 @@
-import java.io.BufferedReader;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class DataProcess {
     private ArrayList<DataInfo> data = new ArrayList<>();
+    private static final String missing = "missing";
 
     public ArrayList<DataInfo> getData(){
         return data;
@@ -33,6 +32,136 @@ public class DataProcess {
             e.printStackTrace();
         }
     }
+
+    private static final String JSON_FilePath = "file.json";
+    public void saveAsFile(){
+        BufferedWriter writer = null;
+        File file = new File(JSON_FilePath);
+        try {
+            writer = new BufferedWriter(new OutputStreamWriter(
+                    new FileOutputStream(file,false), StandardCharsets.UTF_8));
+            writer.write("[");
+
+            StringBuilder sb;
+            boolean isFirst = true;
+            int cnt = 0;
+            for ( DataInfo row : data ){
+                sb = new StringBuilder();
+                if (isFirst) isFirst = false;
+                else sb.append(", ");
+                sb.append("{ ");
+
+                sb.append("\"iso_code\":\""); sb.append(row.getIso_code()); sb.append("\", ");
+                sb.append("\"continent\":\""); sb.append(row.getContinent()); sb.append("\", ");
+                sb.append("\"location\":\""); sb.append(row.getLocation()); sb.append("\", ");
+                sb.append("\"date\":\""); sb.append(row.getDate()); sb.append("\", ");
+
+                sb.append("\"total_cases\":\""); sb.append(row.getTotal_cases()); sb.append("\", ");
+                sb.append("\"new_cases\":\""); sb.append(row.getNew_cases()); sb.append("\", ");
+                sb.append("\"new_cases_smoothed\":\""); sb.append(row.getNew_cases_smoothed()); sb.append("\", ");
+                sb.append("\"total_deaths\":\""); sb.append(row.getTotal_deaths()); sb.append("\", ");
+                sb.append("\"new_deaths\":\""); sb.append(row.getNew_deaths()); sb.append("\", ");
+                sb.append("\"new_deaths_smoothed\":\""); sb.append(row.getNew_deaths_smoothed()); sb.append("\", ");
+                sb.append("\"total_cases_per_million\":\""); sb.append(row.getTotal_cases_per_million()); sb.append("\", ");
+                sb.append("\"new_cases_per_million\":\""); sb.append(row.getNew_cases_per_million()); sb.append("\", ");
+                sb.append("\"new_cases_smoothed_per_million\":\"");
+                sb.append(row.getNew_cases_smoothed_per_million()); sb.append("\", ");
+                sb.append("\"total_deaths_per_million\":\"");
+                sb.append(row.getTotal_deaths_per_million()); sb.append("\", ");
+                sb.append("\"new_deaths_per_million\":\""); sb.append(row.getNew_deaths_per_million()); sb.append("\", ");
+                sb.append("\"new_deaths_smoothed_per_million\":\"");
+                sb.append(row.getNew_deaths_smoothed_per_million()); sb.append("\", ");
+
+                sb.append("\"reproduction_rate\":\""); sb.append(row.getReproduction_rate()); sb.append("\", ");
+                sb.append("\"icu_patients\":\""); sb.append(row.getIcu_patients()); sb.append("\", ");
+                sb.append("\"icu_patients_per_million\":\"");
+                sb.append(row.getIcu_patients_per_million()); sb.append("\", ");
+                sb.append("\"hosp_patients\":\""); sb.append(row.getHosp_patients()); sb.append("\", ");
+                sb.append("\"hosp_patients_per_million\":\"");
+                sb.append(row.getHosp_patients_per_million()); sb.append("\", ");
+                sb.append("\"weekly_icu_admissions\":\""); sb.append(row.getWeekly_icu_admissions()); sb.append("\", ");
+                sb.append("\"weekly_icu_admissions_per_million\":\"");
+                sb.append(row.getWeekly_icu_admissions_per_million()); sb.append("\", ");
+                sb.append("\"weekly_hosp_admissions\":\""); sb.append(row.getWeekly_hosp_admissions()); sb.append("\", ");
+                sb.append("\"weekly_hosp_admissions_per_million\":\"");
+                sb.append(row.getWeekly_hosp_admissions_per_million()); sb.append("\", ");
+
+                sb.append("\"new_tests\":\""); sb.append(row.getNew_tests()); sb.append("\", ");
+                sb.append("\"total_tests\":\""); sb.append(row.getTotal_tests()); sb.append("\", ");
+                sb.append("\"total_tests_per_thousand\":\"");
+                sb.append(row.getTotal_tests_per_thousand()); sb.append("\", ");
+                sb.append("\"new_tests_per_thousand\":\""); sb.append(row.getNew_tests_per_thousand()); sb.append("\", ");
+                sb.append("\"new_tests_smoothed\":\""); sb.append(row.getNew_tests_smoothed()); sb.append("\", ");
+                sb.append("\"new_tests_smoothed_per_thousand\":\"");
+                sb.append(row.getNew_tests_smoothed_per_thousand()); sb.append("\", ");
+                sb.append("\"positive_rate\":\""); sb.append(row.getPositive_rate()); sb.append("\", ");
+                sb.append("\"tests_per_case\":\""); sb.append(row.getTests_per_case()); sb.append("\", ");
+                sb.append("\"tests_units\":\""); sb.append(row.getTests_units()); sb.append("\", ");
+
+                sb.append("\"total_vaccinations\":\""); sb.append(row.getTotal_vaccinations()); sb.append("\", ");
+                sb.append("\"people_vaccinated\":\""); sb.append(row.getPeople_vaccinated()); sb.append("\", ");
+                sb.append("\"people_fully_vaccinated\":\""); sb.append(row.getPeople_fully_vaccinated()); sb.append("\", ");
+                sb.append("\"total_boosters\":\""); sb.append(row.getTotal_boosters()); sb.append("\", ");
+                sb.append("\"new_vaccinations\":\""); sb.append(row.getNew_vaccinations()); sb.append("\", ");
+                sb.append("\"new_vaccinations_smoothed\":\"");
+                sb.append(row.getNew_vaccinations_smoothed()); sb.append("\", ");
+                sb.append("\"total_vaccinations_per_hundred\":\"");
+                sb.append(row.getTotal_vaccinations_per_hundred()); sb.append("\", ");
+                sb.append("\"people_vaccinated_per_hundred\":\"");
+                sb.append(row.getPeople_vaccinated_per_hundred()); sb.append("\", ");
+                sb.append("\"people_fully_vaccinated_per_hundred\":\"");
+                sb.append(row.getPeople_fully_vaccinated_per_hundred()); sb.append("\", ");
+                sb.append("\"total_boosters_per_hundred\":\"");
+                sb.append(row.getTotal_boosters_per_hundred()); sb.append("\", ");
+                sb.append("\"new_vaccinations_smoothed_per_million\":\"");
+                sb.append(row.getNew_vaccinations_smoothed_per_million()); sb.append("\", ");
+
+                sb.append("\"stringency_index\":\""); sb.append(row.getStringency_index()); sb.append("\", ");
+                sb.append("\"population\":\""); sb.append(row.getPopulation()); sb.append("\", ");
+                sb.append("\"population_density\":\""); sb.append(row.getPopulation_density()); sb.append("\", ");
+                sb.append("\"median_age\":\""); sb.append(row.getMedian_age()); sb.append("\", ");
+                sb.append("\"aged_65_older\":\""); sb.append(row.getAged_65_older()); sb.append("\", ");
+                sb.append("\"aged_70_older\":\""); sb.append(row.getAged_70_older()); sb.append("\", ");
+                sb.append("\"gdp_per_capita\":\""); sb.append(row.getGdp_per_capita()); sb.append("\", ");
+                sb.append("\"extreme_poverty\":\""); sb.append(row.getExtreme_poverty()); sb.append("\", ");
+                sb.append("\"cardiovasc_death_rate\":\""); sb.append(row.getCardiovasc_death_rate()); sb.append("\", ");
+                sb.append("\"diabetes_prevalence\":\""); sb.append(row.getDiabetes_prevalence()); sb.append("\", ");
+                sb.append("\"female_smokers\":\""); sb.append(row.getFemale_smokers()); sb.append("\", ");
+                sb.append("\"male_smokers\":\""); sb.append(row.getMale_smokers()); sb.append("\", ");
+                sb.append("\"handwashing_facilities\":\""); sb.append(row.getHandwashing_facilities()); sb.append("\", ");
+                sb.append("\"hospital_beds_per_thousand\":\"");
+                sb.append(row.getHospital_beds_per_thousand()); sb.append("\", ");
+                sb.append("\"life_expectancy\":\""); sb.append(row.getLife_expectancy()); sb.append("\", ");
+                sb.append("\"human_development_index\":\""); sb.append(row.getHuman_development_index()); sb.append("\", ");
+
+                sb.append("\"excess_mortality_cumulative_absolute\":\"");
+                sb.append(row.getExcess_mortality_cumulative_absolute()); sb.append("\", ");
+                sb.append("\"excess_mortality_cumulative\":\"");
+                sb.append(row.getExcess_mortality_cumulative()); sb.append("\", ");
+                sb.append("\"excess_mortality\":\""); sb.append(row.getExcess_mortality()); sb.append("\", ");
+                sb.append("\"excess_mortality_cumulative_per_million\":\"");
+                sb.append(row.getExcess_mortality_cumulative_per_million()); sb.append("\"");
+
+                sb.append(" }");
+                writer.write(sb.toString());
+                cnt++;
+                System.out.printf("finish writing %d rows\n", cnt);
+            }
+            writer.write("]");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }finally {
+            try {
+                if(writer != null){
+                    writer.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        System.out.println("JSON文件写入成功！");
+    }
+
 } // end of class
 
 class CSVReader{

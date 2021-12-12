@@ -6,14 +6,13 @@ public class Test {
         DataProcess dp = new DataProcess();
         dp.readData("owid-covid-data.csv", ",");
         ArrayList<DataInfo> data = dp.getData();
-        int row_id = 3;
-        DataInfo data_row = data.get(row_id);
-        System.out.println(data_row.getIso_code());
-        System.out.println(data_row.getContinent());
-        System.out.println(data_row.getLocation());
-        System.out.println(data_row.getDate());
-        System.out.println(data_row.getTotal_cases());
-        System.out.println(data_row.getNew_cases());
-        System.out.println(data_row.getStringency_index());
+        ArrayList<String> locations = new ArrayList<>();
+        for ( DataInfo row : data ){
+            String location = row.getLocation();
+            if ( !locations.contains(location) ) locations.add(location);
+        }
+        for ( String l : locations ){
+            System.out.println(l);
+        }
     }
 }
